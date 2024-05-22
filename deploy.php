@@ -28,6 +28,14 @@ task('build', function () {
     run('cd {{release_path}} && build');
 });
 
+task('reload:php-fpm', function () {
+    run('sudo /etc/init.d/php8.3-fpm restart');
+});
+
+
 // Hooks
 
 after('deploy:failed', 'deploy:unlock');
+after('deploy', 'reload:php-fpm');
+
+// before('deploy:symlink', 'artisan:migrate');
