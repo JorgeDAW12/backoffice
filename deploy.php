@@ -11,7 +11,7 @@ set('application', 'backoffice');
 
 set('repository', 'https://github.com/JorgeDAW12/backoffice.git');
 
-add('shared_files', ['.env']);
+add('shared_files', ['database/database.sqlite', '.env']);
 add('shared_dirs', ['bootstrap/cache', 'storage']);
 add('writable_dirs', ['bootstrap/cache', 'storage']);
 
@@ -21,6 +21,8 @@ host('3.90.100.233')
     ->set('remote_user', 'backoffice-deployer')
     ->set('identity_file', '~/.ssh/id_rsa')
     ->set('deploy_path', '/home/backoffice-deployer/var/www');
+
+set('keep_releases', 3);
 
 // Tasks
 
@@ -38,4 +40,4 @@ task('reload:php-fpm', function () {
 after('deploy:failed', 'deploy:unlock');
 after('deploy', 'reload:php-fpm');
 
-// before('deploy:symlink', 'artisan:migrate');
+before('deploy:symlink', 'artisan:migrate');
